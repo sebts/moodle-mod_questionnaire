@@ -724,9 +724,10 @@ function xmldb_questionnaire_upgrade($oldversion=0) {
         }
 
         // Get all of the attempts records, and add the questionnaire id to the corresponding response record.
-        $sql = 'UPDATE {questionnaire_response} qr ' .
-               'INNER JOIN {questionnaire_attempts} qa ON qr.id = qa.rid ' .
-               'SET qr.questionnaireid = qa.qid';
+        $sql = 'UPDATE qr ' .
+               'SET qr.questionnaireid = qa.qid ' .
+               'FROM {questionnaire_response} qr ' .
+               'INNER JOIN {questionnaire_attempts} qa ON qr.id = qa.rid ';
         $DB->execute($sql, []);
 
         // Get all of the response records with a '0' questionnaireid, and extract the questionnaireid from the survey_id field.
